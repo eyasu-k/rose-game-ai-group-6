@@ -4,7 +4,7 @@ This driver does not do any action.
 
 from rose.common import obstacles, actions  # NOQA
 
-driver_name = "depth-5-engine"
+driver_name = "GAY MOBIL"
 
 
 MAX_DEPTH = 5
