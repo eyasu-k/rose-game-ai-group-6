@@ -4,7 +4,7 @@ This driver does not do any action.
 
 from rose.common import obstacles, actions  # NOQA
 
-driver_name = "MyDriver8"
+driver_name = "MyDriver76"
 
 
 MAX_DEPTH = 2
@@ -50,6 +50,7 @@ class DriveEngine:
     def get_object_reward(self, x: int, y: int) -> str:
         obj = self.get_obj(x, y)
         prev_obj = self.get_obj(x, y+1)
+        next_obj = self.get_obj(x, y-1)
         
         # #it doesn't matter what's infront of the object if the object is already harmful so we skip all the code below and return the original value
         # if obj in (obstacles.BIKE, obstacles.TRASH, obstacles.BARRIER):
@@ -63,7 +64,13 @@ class DriveEngine:
             return REWARDS[obj]
         
         if obj in (obstacles.PENGUIN, obstacles.CRACK, obstacles.WATER) and prev_obj not in (obstacles.PENGUIN, obstacles.NONE):
+            
+            if self.__car_x == x and self.__car_y - y == 1: #incase two waters/cracks appear on the same lane concecutively, we want to pick both of them and not just the first one and flag the second one as punishment just because its previous cell isnt a penguin or none
+                return REWARDS[obj]
             return PUNISH
+        
+        if obj == obstacles.NONE and next_obj in (obstacles.PENGUIN, obstacles.CRACK, obstacles.WATER):
+            return 3
         
         return REWARDS[obj]
     
