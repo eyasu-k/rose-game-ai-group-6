@@ -4,10 +4,10 @@ This driver does not do any action.
 
 from rose.common import obstacles, actions  # NOQA
 
-driver_name = "wind"
+driver_name = "depth-5-engine"
 
 
-MAX_DEPTH = 2
+MAX_DEPTH = 5
 PATH_SCORE_IDX = 0
 PATH_ACTION_IDX = 1
 
@@ -52,10 +52,6 @@ class DriveEngine:
         obj = self.get_obj(x, y)
         prev_obj = self.get_obj(x, y+1)
         next_obj = self.get_obj(x, y-1)
-        
-        # #it doesn't matter what's infront of the object if the object is already harmful so we skip all the code below and return the original value
-        # if obj in (obstacles.BIKE, obstacles.TRASH, obstacles.BARRIER):
-        #     return REWARDS[obj]
         
         if obj == obstacles.NONE and next_obj in (obstacles.PENGUIN, obstacles.CRACK, obstacles.WATER):
             return REWARDS[next_obj]
