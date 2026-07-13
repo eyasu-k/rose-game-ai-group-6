@@ -4,7 +4,7 @@ This driver does not do any action.
 
 from rose.common import obstacles, actions  # NOQA
 
-driver_name = "MyDriver76"
+driver_name = "wind"
 
 
 MAX_DEPTH = 2
@@ -45,6 +45,7 @@ class DriveEngine:
             obj = self.__world.get((x, y))
             return obj
         except IndexError:
+            print("Exception raised")
             return None
     
     def get_object_reward(self, x: int, y: int) -> str:
@@ -56,6 +57,8 @@ class DriveEngine:
         # if obj in (obstacles.BIKE, obstacles.TRASH, obstacles.BARRIER):
         #     return REWARDS[obj]
         
+        if obj == obstacles.NONE and next_obj in (obstacles.PENGUIN, obstacles.CRACK, obstacles.WATER):
+            return REWARDS[next_obj]
         if obj in (obstacles.PENGUIN, obstacles.CRACK, obstacles.WATER) and prev_obj in (obstacles.PENGUIN, obstacles.NONE):
             if self.__car_x != x and self.__car_y - y == 1: #checking if the item is even reachable to be picked/jumped/breaked       (the car cannot go diagonal and perform a special action if the object is found in the diagonal cell. the car needs to be 1 cell behind and on the same lane in order to perform a special action.)     
                 if obj == obstacles.PENGUIN:#moving on a penguin doesnt reduct any points so NEUTRAL is returned
@@ -69,8 +72,6 @@ class DriveEngine:
                 return REWARDS[obj]
             return PUNISH
         
-        if obj == obstacles.NONE and next_obj in (obstacles.PENGUIN, obstacles.CRACK, obstacles.WATER):
-            return 3
         
         return REWARDS[obj]
     
