@@ -4,7 +4,7 @@ This driver does not do any action.
 
 from rose.common import obstacles, actions  # NOQA
 
-driver_name = "GAY MOBIL"
+driver_name = "g6 - GAY MOBIL"
 
 
 MAX_DEPTH = 5
@@ -21,6 +21,7 @@ REWARDS = {
     obstacles.WATER: 4,
     obstacles.BARRIER: -10,
 }
+
 PUNISH = -10
 NEUTRAL = 0
 
@@ -95,7 +96,6 @@ class DriveEngine:
             possible_moves.append((current_x + 1, actions.RIGHT))
             
         for next_x, next_action in possible_moves:
-             # Считаем очки в клетке, куда наступит машина на этом шаге
             cell_reward = self.get_object_reward(next_x, next_y)
             
             step_action = first_step_action
